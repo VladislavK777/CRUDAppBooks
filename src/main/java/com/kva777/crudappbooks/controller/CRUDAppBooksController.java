@@ -89,4 +89,25 @@ public class CRUDAppBooksController {
         return "books";
     }
 
+    @RequestMapping("/search/title")
+    public String searchBookByTitle(@RequestParam(value = "title") String title, Model model) {
+        model.addAttribute("book", new Books());
+        model.addAttribute("listBooks", crudAppBooksService.searchBookByTitle(title));
+        return "books";
+    }
+
+    @RequestMapping("/search/year")
+    public String searchBookByYear(@RequestParam(value = "year") int year, Model model) {
+        model.addAttribute("book", new Books());
+        model.addAttribute("listBooks", crudAppBooksService.searchBookByYear(year));
+        return "books";
+    }
+
+    @RequestMapping("/search/read")
+    public String searchBookByRead(@RequestParam(value = "read") boolean read, Model model) {
+        model.addAttribute("book", new Books());
+        model.addAttribute("listBooks", crudAppBooksService.searchBookByRead(read));
+        return "books";
+    }
+
 }

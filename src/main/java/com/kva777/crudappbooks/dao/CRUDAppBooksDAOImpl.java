@@ -58,21 +58,21 @@ public class CRUDAppBooksDAOImpl implements CRUDAppBooksDAO {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Books> searchBook(String title) {
+    public List<Books> searchBookByTitle(String title) {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from Books where title = :title").setParameter("title", title).list();
+        return session.createQuery("from Books b where b.title = :title").setParameter("title", title).list();
     }
 
     @SuppressWarnings("unchecked")
-    public List<Books> searchBook(int printYear) {
+    public List<Books> searchBookByYear(int printYear) {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from Books where printYear >= :printYear").setParameter("printYear", printYear).list();
+        return session.createQuery("from Books b where b.printYear >= :printYear").setParameter("printYear", printYear).list();
     }
 
     @SuppressWarnings("unchecked")
-    public List<Books> searchBook(boolean readAlready) {
+    public List<Books> searchBookByRead(boolean readAlready) {
         Session session = sessionFactory.getCurrentSession();
-        return (readAlready) ? session.createQuery("from Books where readAlready = true").list() : session.createQuery("from Books where readAlready = false").list();
+        return (readAlready) ? session.createQuery("from Books b where b.readAlready = true").list() : session.createQuery("from Books b where b.readAlready = false").list();
     }
 
     @Override
@@ -85,8 +85,9 @@ public class CRUDAppBooksDAOImpl implements CRUDAppBooksDAO {
     @Override
     public Books getBookById(int id) {
         Session session = sessionFactory.getCurrentSession();
-        System.out.println(session.load(Books.class, new Integer(id)));
-        return session.load(Books.class, new Integer(id));
+        Books bookById = (Books) session.load(Books.class, new Integer(id));
+        logger.info("Книга: " + bookById);
+        return bookById;
     }
 
     public void setSessionFactory(SessionFactory sessionFactory) {

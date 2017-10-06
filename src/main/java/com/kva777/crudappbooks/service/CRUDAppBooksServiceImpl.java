@@ -53,20 +53,20 @@ public class CRUDAppBooksServiceImpl implements CRUDAppBooksService {
 
     @Override
     @Transactional
-    public List<Books> searchBook(String title) {
-        return crudAppBooksDAO.searchBook(title);
+    public List<Books> searchBookByTitle(String title) {
+        return crudAppBooksDAO.searchBookByTitle(title);
     }
 
     @Override
     @Transactional
-    public List<Books> searchBook(int printYear) {
-        return crudAppBooksDAO.searchBook(printYear);
+    public List<Books> searchBookByYear(int printYear) {
+        return crudAppBooksDAO.searchBookByYear(printYear);
     }
 
     @Override
     @Transactional
-    public List<Books> searchBook(boolean readAlready) {
-        return crudAppBooksDAO.searchBook(readAlready);
+    public List<Books> searchBookByRead(boolean readAlready) {
+        return crudAppBooksDAO.searchBookByRead(readAlready);
     }
 
     @Override

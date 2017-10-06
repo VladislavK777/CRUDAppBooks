@@ -222,11 +222,11 @@
 
         .form {
             position: absolute;
-            top: 30%;
-            left: 40%;
+            top: 22%;
+            left: 75%;
             margin: auto;
             z-index: 2;
-            width: 300px;
+            width: 350px;
             padding: 40px 20px;
             background: #FFFFFF;
             border: 1px solid #666666;
@@ -268,41 +268,40 @@
 
     </style>
 </head>
+
 <body>
 <div class="one">
     <h1>CRUDAppBooks</h1>
 </div>
 
-<!-- Используем JS для красивого всплывающего окна -->
-<script type="text/javascript">
-    $(document).ready(function () {
-
-        $(popup_bg).click(function () {
-            $(popup).fadeOut(800);
-        });
-
-    });
-
-    function showPopup() {
-        $(popup).fadeIn(800);
-    }
-</script>
-
-<br>
-
-<input type="button" value="Добавить книгу" onclick="showPopup()"
-       class="bot1">
-
+<form action="/search/title">
+    Title: <input type="text" name="title" class="input_style_of_text"/>
+    <input type="submit" value="Search" class="bot1"/>
+</form>
+<form action="/search/year">
+    Year: <input type="text" name="year" class="input_style_of_text"/>
+    <input type="submit" value="Search" class="bot1"/>
+</form>
+<form action="/search/read">
+    Read: <input type="text" name="read" class="input_style_of_text"/>
+    <input type="submit" value="Search" class="bot1"/>
+</form>
+<form action="/">
+    <input type="submit" value="Reset" class="bot1"/>
+</form>
 <table class="table_report">
     <tr>
         <td class="td_report">
-            <div id="popup"
-                 style="position: absolute; height: 100%; width: 100%; top: 0; left: 0; display: none;">
-                <div id="popup_bg"
-                     style="background: rgba(0, 0, 0, 0.2); position: absolute; z-index: 1; height: 100%; width: 100%;">
+            <div style="position: fixed; z-index: 101; left: 75%; top: 20%">
+                <div>
                 </div>
                 <div class="form">
-                    <h1>Добавить книгу:</h1>
+                    <c:if test="${!empty book.title}">
+                        <h1>Редактировать книгу:</h1>
+                    </c:if>
+                    <c:if test="${empty book.title}">
+                        <h1>Добавить книгу:</h1>
+                    </c:if>
                     <c:url var="add" value="/books/add"/>
                     <form:form action="${add}" commandName="book">
                         <table>
@@ -418,7 +417,7 @@
                 <td class="td_report">${listBooks.readAlready}</td>
                 <td class="td_report">
                     <form action="/edit/${listBooks.id}">
-                        <input type="submit" value="Edit" class="bot1" onclick="showPopupBook()">
+                        <input type="submit" value="Edit" class="bot1">
                     </form>
                 </td>
                 <td class="td_report">
@@ -430,152 +429,6 @@
         </c:forEach>
     </table>
 </c:if>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-
-        $(popup_bg_book).click(function () {
-            $(popup_book).fadeOut(800);
-        });
-
-    });
-
-    function showPopupBook() {
-        $(popup_book).fadeIn(800);
-    }
-</script>
-
-<table class="table_report">
-    <tr>
-        <td class="td_report">
-            <div id="popup_book"
-                 style="position: absolute; height: 100%; width: 100%; top: 0; left: 0; display: none;">
-                <div id="popup_bg_book"
-                     style="background: rgba(0, 0, 0, 0.2); position: absolute; z-index: 1; height: 100%; width: 100%;">
-                </div>
-                <div class="form">
-                    <h1>Добавить книгу:</h1>
-                    <c:url var="add" value="/books/add"/>
-                    <form:form action="${add}" commandName="book">
-                        <table>
-                            <c:if test="${!empty book.title}">
-                                <tr>
-                                    <td>
-                                        <form:label path="id">
-                                        </form:label>
-                                    </td>
-                                    <td>
-                                        <form:input path="id" readonly="true" disabled="true" type="hidden"/>
-                                        <form:hidden path="id"/>
-                                    </td>
-                                </tr>
-                            </c:if>
-                            <tr>
-                                <td>Title:</td>
-                                <td><form:input path="title"
-                                                class="input_style_of_text"/></td>
-
-                            </tr>
-                            <tr>
-                                <td>Description:</td>
-                                <td><form:input path="description"
-                                                class="input_style_of_text"/></td>
-                            </tr>
-                            <tr>
-                                <td>Author:</td>
-                                <c:if test="${!empty book.title}">
-                                    <td><form:input path="author"
-                                                    class="input_style_of_text" readonly="true"/></td>
-                                </c:if>
-                                <c:if test="${empty book.title}">
-                                    <td><form:input path="author"
-                                                    class="input_style_of_text"/></td>
-                                </c:if>
-
-                            </tr>
-                            <tr>
-                                <td>ISBN:</td>
-                                <td><form:input path="isbn"
-                                                class="input_style_of_text"/></td>
-                            </tr>
-                            <tr>
-                                <td>PrintYear:</td>
-                                <td><form:input path="printYear"
-                                                class="input_style_of_text"/></td>
-                            </tr>
-                            <tr>
-                                <td>ReadAlready:</td>
-                                <c:if test="${empty book.title}">
-                                    <td><form:input path="readAlready" value="false"
-                                                    class="input_style_of_text" readonly="true"/></td>
-                                </c:if>
-                                <c:if test="${!empty book.title}">
-                                    <td>
-                                        <form>
-                                            <div class="select-and-input">
-                                                <select name="selectName"
-                                                        onchange="parentNode.getElementsByTagName('input')[0].value=value">
-                                                    <c:if test="${book.readAlready}">
-                                                        <option value="true">Yes</option>
-                                                        <option value="false">No</option>
-                                                    </c:if>
-                                                    <c:if test="${!book.readAlready}">
-                                                        <option value="false">No</option>
-                                                        <option value="true">Yes</option>
-                                                    </c:if>
-                                                </select>
-                                                <form:input path="readAlready"
-                                                            class="input_style_of_text" type="hidden"/>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </c:if>
-                            </tr>
-                        </table>
-                        <c:if test="${!empty book.title}">
-                            <input type="submit"
-                                   value="<spring:message text="Edit book"/>" class="bot2"/>
-                        </c:if>
-                        <c:if test="${empty book.title}">
-                            <input type="submit"
-                                   value="<spring:message text="Add book"/>" class="bot2"/>
-                        </c:if>
-                    </form:form>
-                </div>
-            </div>
-        </td>
-    </tr>
-</table>
-
-<div id="pagination">
-    <c:url value="/list" var="prev">
-        <c:param name="page" value="${page-1}"/>
-    </c:url>
-    <c:if test="${page > 1}">
-        <a href="<c:out value="${prev}" />" class="pn prev">Prev</a>
-    </c:if>
-
-    <c:forEach begin="1" end="${maxPages}" step="1" varStatus="i">
-        <c:choose>
-            <c:when test="${page == i.index}">
-                <span>${i.index}</span>
-            </c:when>
-            <c:otherwise>
-                <c:url value="/list" var="url">
-                    <c:param name="page" value="${i.index}"/>
-                </c:url>
-                <a href='<c:out value="${url}" />'>${i.index}</a>
-            </c:otherwise>
-        </c:choose>
-    </c:forEach>
-    <c:url value="/list" var="next">
-        <c:param name="page" value="${page + 1}"/>
-    </c:url>
-    <c:if test="${page + 1 <= maxPages}">
-        <a href='<c:out value="${next}" />' class="pn next">Next</a>
-    </c:if>
-</div>
-
 
 </body>
 </html>

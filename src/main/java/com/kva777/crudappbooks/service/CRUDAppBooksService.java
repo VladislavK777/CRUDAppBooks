@@ -28,13 +28,13 @@ public interface CRUDAppBooksService {
     public void readBook(Books book);
 
     // Метод поиска книги по названию
-    public List<Books> searchBook(String title);
+    public List<Books> searchBookByTitle(String title);
 
     // Метод поиска книги по году
-    public List<Books> searchBook(int printYear);
+    public List<Books> searchBookByYear(int printYear);
 
     // Метод поиска книги по прочтению
-    public List<Books> searchBook(boolean readAlready);
+    public List<Books> searchBookByRead(boolean readAlready);
 
     // Метод вывода списка книг
     public List<Books> listBooks();
