@@ -19,7 +19,6 @@ import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.portlet.ModelAndView;
 
 import java.util.List;
 
