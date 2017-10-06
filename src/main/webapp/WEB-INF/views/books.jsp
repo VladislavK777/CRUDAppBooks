@@ -266,6 +266,32 @@
             width: 78px;
         }
 
+        .pagination {
+            display: inline-block;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        .pagination a.active {
+            background-color: #0c7b45;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+            border-radius: 5px;
+        }
+
+        .center {
+            text-align: center;
+        }
+
     </style>
 </head>
 
@@ -429,6 +455,40 @@
         </c:forEach>
     </table>
 </c:if>
+
+<br>
+
+<!-- Пагинатор -->
+<div class="center">
+    <div class="pagination">
+        <c:url value="/" var="prev">
+            <c:param name="page" value="${page-1}"/>
+        </c:url>
+        <c:if test="${page > 1}">
+            <a href='<c:out value="${prev}" />'>&laquo;</a>
+        </c:if>
+
+        <c:forEach begin="1" end="${maxPages}" step="1" varStatus="i">
+            <c:choose>
+                <c:when test="${page == i.index}">
+                    <a class="active">${i.index}</a>
+                </c:when>
+                <c:otherwise>
+                    <c:url value="/" var="url">
+                        <c:param name="page" value="${i.index}"/>
+                    </c:url>
+                    <a href='<c:out value="${url}" />'>${i.index}</a>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+        <c:url value="/" var="next">
+            <c:param name="page" value="${page + 1}"/>
+        </c:url>
+        <c:if test="${page + 1 <= maxPages}">
+            <a href='<c:out value="${next}" />'>&raquo;</a>
+        </c:if>
+    </div>
+</div>
 
 </body>
 </html>

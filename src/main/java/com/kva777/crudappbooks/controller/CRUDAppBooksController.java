@@ -37,19 +37,11 @@ public class CRUDAppBooksController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String home(Model model) {
-        model.addAttribute("book", new Books());
-        model.addAttribute("listBooks", crudAppBooksService.listBooks());
-        return "books";
-    }
-
-    @RequestMapping(value = "/list")
-    public String listOfUsers(@RequestParam(required = false) Integer page, Model model) {
-
+    public String home(@RequestParam(value = "page", required = false) Integer page, Model model) {
 
         List<Books> book = crudAppBooksService.listBooks();
         PagedListHolder<Books> pagedListHolder = new PagedListHolder<Books>(book);
-        pagedListHolder.setPageSize(5);
+        pagedListHolder.setPageSize(10);
         model.addAttribute("maxPages", pagedListHolder.getPageCount());
 
         if (page == null || page < 1 || page > pagedListHolder.getPageCount()) page = 1;
@@ -57,13 +49,18 @@ public class CRUDAppBooksController {
         model.addAttribute("page", page);
         if (page == null || page < 1 || page > pagedListHolder.getPageCount()) {
             pagedListHolder.setPage(0);
-            model.addAttribute("book", pagedListHolder.getPageList());
+            model.addAttribute("book", new Books());
+            model.addAttribute("listBooks", pagedListHolder.getPageList());
         } else if (page <= pagedListHolder.getPageCount()) {
             pagedListHolder.setPage(page - 1);
-            model.addAttribute("book", pagedListHolder.getPageList());
+            model.addAttribute("book", new Books());
+            model.addAttribute("listBooks", pagedListHolder.getPageList());
         }
 
         return "books";
+
+        /*model.addAttribute("listBooks", crudAppBooksService.listBooks());
+        return "books";*/
     }
 
     @RequestMapping(value = "/books/add", method = RequestMethod.POST)
@@ -97,7 +94,8 @@ public class CRUDAppBooksController {
     }
 
     @RequestMapping("/search/year")
-    public String searchBookByYear(@RequestParam(value = "year") int year, Model model) {
+    public String searchBookByYear(@RequestParam(value = "year") int year,
+                                   @RequestParam(value = "page", required = false) Integer page, Model model) {
         model.addAttribute("book", new Books());
         model.addAttribute("listBooks", crudAppBooksService.searchBookByYear(year));
         return "books";
